@@ -3,10 +3,11 @@
     a {
         color: black;
     }
+
     .bg {
         animation: slide 3s ease-in-out infinite alternate;
         background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
-        bottom: 0; 
+        bottom: 0;
         left: -50%;
         opacity: .5;
         position: fixed;
@@ -101,6 +102,15 @@
     #left-sidebar {
         overflow: auto;
     }
+
+    .cpicker {
+        width: 50px;
+        height: 30px;
+        border: none;
+        padding: 0%;
+        margin: 0%;
+
+    }
 </style>
 
 <body>
@@ -109,9 +119,11 @@
             <div class="bg"></div>
             <div class="bg bg2"></div>
             <div class="bg bg3"></div>
-            <div style="width:100px;height:100px;background-image: url('pi.png');background-size: contain;z-index: -1;position:absolute;background-repeat: no-repeat;">
+            <div
+                style="width:100px;height:100px;background-image: url('pi.png');background-size: contain;z-index: -1;position:absolute;background-repeat: no-repeat;">
             </div>
-            <div class="slidecontainer" style='font-face:Verdana;font-size:20px;color:black;position:absolute;top:0px;left:100px;'>
+            <div class="slidecontainer"
+                style='font-face:Verdana;font-size:20px;color:black;position:absolute;top:0px;left:100px;'>
                 <input type="range" min="4" max="100" value="20" id="size_slider" style="width:100%;height:30px"
                     oninput="drawCanvas()">
                 <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:20px;height:20px" />
@@ -120,7 +132,17 @@
                 <a href="?pid=1">Colors 2</a> &nbsp;
                 <a href="?pid=2">Colors 3</a> &nbsp;
                 <a href="?pid=3">Colors 4</a> &nbsp;
-
+                <br />
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_0">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_1">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_2">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_3">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_4">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_5">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_6">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_7">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_8">
+                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_9">
             </div>
         </div>
         <div id="main">
@@ -193,6 +215,28 @@
         return "#" + padZero(r) + padZero(g) + padZero(b);
     }
 
+    function clearCache() {
+        canvasCache = {};
+    }
+    function onColorChangedByUser() {
+        for (i = 0; i < 10; ++i) {
+            _cp = colorPickers[i]
+            colorArray[i] =_cp.value
+        }
+
+        colors_txt=""
+        textColorArray = [];
+        for (i = 0; i < colorArray.length; ++i) {
+            textColorArray.push(invertColor(colorArray[i], false))
+            tmp=colorArray[i].replace("#","")
+            if (i>0) colors_txt+=","
+            colors_txt+=tmp
+        }
+        window.history.replaceState(null, "Rainbow PI", "?colors="+colors_txt);
+        clearCache();
+        drawCanvas();
+    }
+
     function drawCanvas() {
         var size = parseInt(document.getElementById("size_slider").value)
         // console.log(size)
@@ -253,6 +297,7 @@
     let urlParams = new URLSearchParams(queryString);
     var canvasCache = {}
     var canvases = []
+    var colorPickers = []
     var colorPalete = [
         ['#0000FF', '#7fff00', '#D2691E', '#DC143C', '#00008B', '#FF1493', '#00FF00', '#FF0000', '#FFFF00', '#6A5ACD', '#C0C0C0'],
         ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D', '#C0C0C0'],
@@ -262,6 +307,20 @@
     var palete_id = parseInt(urlParams.get('pid'));
     if (isNaN(palete_id)) palete_id = 0;
     var colorArray = colorPalete[palete_id];
+    var colors_param = urlParams.get('colors');
+    if (colors_param && colors_param.length>0) {
+        var tmp_colors = colors_param.split(",");
+        for(i=0;i<tmp_colors.length;++i) {
+            colorArray[i] = "#"+tmp_colors[i]
+        }
+    }
+    for (i = 0; i < 10; ++i) {
+        var _cp = document.getElementById("color_" + i);
+        colorPickers.push(_cp)
+        _cp.value = colorArray[i]
+        _cp.addEventListener('change', onColorChangedByUser, true);
+    }
+
     var textColorArray = [];
     for (i = 0; i < colorArray.length; ++i) {
         textColorArray.push(invertColor(colorArray[i], false))
@@ -278,7 +337,9 @@
     // c.width = dimension[0] * 0.97;
     // c.height = dimension[1] * 0.95;
     document.getElementById("size_slider").width = dimension[0] * 0.9;
-    drawCanvas()
+    onColorChangedByUser();
+
+    window.addEventListener("resize",function(){clearCache();drawCanvas();},true);
 </script>
 
 </html>
