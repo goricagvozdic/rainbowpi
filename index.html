@@ -77,17 +77,25 @@
         ctx.fillRect(0, 0, width, height)
         var x = 0;
         var y = 0;
+        // draw digits first
+        for (i = 0; i < 10; ++i) {
+            _canvas = canvases[i]
+            _ctx = _canvas.getContext("2d");
+            _ctx.width = size
+            _ctx.height = size
+            _ctx.fillStyle = colorArray[i];
+            _ctx.fillRect(0, 0, size, size);
+            _ctx.fillStyle = textColorArray[i];
+            if (size > 6) {
+                _ctx.font = (size - 2) + "px Verdana";
+                _ctx.textAlign = "center";
+                _ctx.textBaseline = "middle";
+                _ctx.fillText(i, size / 2, size / 2);
+            }
+        }
         for (i = 0; i < pi.length; ++i) {
             let digit = parseInt(pi[i])
-            ctx.fillStyle = colorArray[digit];
-            ctx.fillRect(x, y, size, size);
-            ctx.fillStyle = textColorArray[digit];
-            ctx.font = (size - 2) + "px Verdana";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            if (size > 6) {
-                ctx.fillText(digit, x + size / 2, y + size / 2);
-            }
+            ctx.drawImage(canvases[digit],x,y);
             x += size
             if (x > width) {
                 x = 0;
@@ -101,14 +109,18 @@
     var g_animationDirection = -1;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
+    const canvases = []
+    for (i = 0; i < 10; ++i) {
+        c = document.createElement('canvas')
+        canvases.push(c)
 
+    }
     var colorPalete = [
-        ['#e9002c', '#ef4057', '#f48082', '#fabfae', '#ffffd9', '#bff1d4', '#80e2d0', '#40d4cb', '#00c5c6', '#B34D4D' ],
-        ['#ff0000', '#fc4005', '#f8800b', '#f5bf10', '#f2ff15', '#b5ff2a', '#79ff3e', '#3cff53', '#00ff67', '#B34D4D'],
-        ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D']
+        ['#0000FF', '#7fff00', '#D2691E', '#DC143C', '#00008B', '#FF1493', '#00FF00', '#FF0000', '#FFFF00', '#6A5ACD', '#C0C0C0'],
+        ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D', '#C0C0C0'],
     ];
     var palete_id = parseInt(urlParams.get('pid'));
-    if (isNaN(palete_id)) palete_id=0;
+    if (isNaN(palete_id)) palete_id = 0;
     var colorArray = colorPalete[palete_id];
     var textColorArray = [];
     for (i = 0; i < colorArray.length; ++i) {
