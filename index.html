@@ -1,5 +1,56 @@
 <html>
 <style>
+    a {
+        color: black;
+    }
+    .bg {
+        animation: slide 3s ease-in-out infinite alternate;
+        background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+        bottom: 0; 
+        left: -50%;
+        opacity: .5;
+        position: fixed;
+        right: -50%;
+        top: 0;
+        z-index: -1;
+    }
+
+    .bg2 {
+        animation-direction: alternate-reverse;
+        animation-duration: 4s;
+    }
+
+    .bg3 {
+        animation-duration: 5s;
+    }
+
+    .content {
+        background-color: rgba(255, 255, 255, .8);
+        border-radius: .25em;
+        box-shadow: 0 0 .25em rgba(0, 0, 0, .25);
+        box-sizing: border-box;
+        left: 50%;
+        padding: 10vmin;
+        position: fixed;
+        text-align: center;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    h1 {
+        font-family: monospace;
+    }
+
+    @keyframes slide {
+        0% {
+            transform: translateX(-25%);
+        }
+
+        100% {
+            transform: translateX(25%);
+        }
+    }
+
     #layout,
     #header,
     #main,
@@ -16,7 +67,6 @@
     }
 
     #layout {
-        background: #abc;
         top: 0;
         right: 0;
         bottom: 0;
@@ -24,7 +74,6 @@
     }
 
     #header {
-        background-image: url("header.jpg");
         top: 0;
         right: 0;
         height: 100px;
@@ -41,13 +90,12 @@
     }
 
     #content {
-        background: #dcb;
         top: 0;
         width: 100%;
         bottom: 0;
         left: 0;
     }
-    
+
     #content,
     #right-sidebar,
     #left-sidebar {
@@ -58,7 +106,12 @@
 <body>
     <div id="layout">
         <div id="header">
-            <div class="slidecontainer" style='font-face:Verdana;font-size:20px;color:black'>
+            <div class="bg"></div>
+            <div class="bg bg2"></div>
+            <div class="bg bg3"></div>
+            <div style="width:100px;height:100px;background-image: url('pi.png');background-size: contain;z-index: -1;position:absolute;background-repeat: no-repeat;">
+            </div>
+            <div class="slidecontainer" style='font-face:Verdana;font-size:20px;color:black;position:absolute;top:0px;left:100px;'>
                 <input type="range" min="4" max="100" value="20" id="size_slider" style="width:100%;height:30px"
                     oninput="drawCanvas()">
                 <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:20px;height:20px" />
@@ -67,6 +120,7 @@
                 <a href="?pid=1">Colors 2</a> &nbsp;
                 <a href="?pid=2">Colors 3</a> &nbsp;
                 <a href="?pid=3">Colors 4</a> &nbsp;
+
             </div>
         </div>
         <div id="main">
@@ -143,11 +197,11 @@
         var size = parseInt(document.getElementById("size_slider").value)
         // console.log(size)
         var c = document.getElementById("myCanvas");
-        c.style.width ='100%';
-  c.style.height='100%';
-  // ...then set the internal size to match
-  c.width  = c.offsetWidth;
-  c.height = c.offsetHeight;
+        c.style.width = '100%';
+        c.style.height = '100%';
+        // ...then set the internal size to match
+        c.width = c.offsetWidth;
+        c.height = c.offsetHeight;
         var width = document.getElementById("content").offsetWidth;
         var height = document.getElementById("content").offsetHeight;
         console.log(width, height, document.getElementById("main"));
@@ -202,8 +256,8 @@
     var colorPalete = [
         ['#0000FF', '#7fff00', '#D2691E', '#DC143C', '#00008B', '#FF1493', '#00FF00', '#FF0000', '#FFFF00', '#6A5ACD', '#C0C0C0'],
         ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D', '#C0C0C0'],
-        ["#1705e8","#2e09d1","#460eb9","#5d13a2","#74178b","#8b1c74","#a2205d","#b92546","#d12a2e","#e82e17"],
-        ["#171717","#2e2e2e","#464646","#5d5d5d","#747474","#8b8b8b","#a2a2a2","#b9b9b9","#d1d1d1","#e8e8e8"]
+        ["#1705e8", "#2e09d1", "#460eb9", "#5d13a2", "#74178b", "#8b1c74", "#a2205d", "#b92546", "#d12a2e", "#e82e17"],
+        ["#171717", "#2e2e2e", "#464646", "#5d5d5d", "#747474", "#8b8b8b", "#a2a2a2", "#b9b9b9", "#d1d1d1", "#e8e8e8"]
     ];
     var palete_id = parseInt(urlParams.get('pid'));
     if (isNaN(palete_id)) palete_id = 0;
