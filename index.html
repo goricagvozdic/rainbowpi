@@ -1,10 +1,84 @@
+<html>
+<style>
+    #layout,
+    #header,
+    #main,
+    #myCanvas,
+    #left-sidebar,
+    #right,
+    #right-sidebar,
+    #content {
+        position: absolute;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    #layout {
+        background: #abc;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    #header {
+        background-image: url("header.jpg");
+        top: 0;
+        right: 0;
+        height: 100px;
+        left: 0;
+    }
+
+    #main {
+        top: 100px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #content {
+        background: #dcb;
+        top: 0;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+    }
+    
+    #content,
+    #right-sidebar,
+    #left-sidebar {
+        overflow: auto;
+    }
+</style>
+
+<body>
+    <div id="layout">
+        <div id="header">
+            <div class="slidecontainer" style='font-face:Verdana;font-size:20px;color:black'>
+                <input type="range" min="4" max="100" value="20" id="size_slider" style="width:100%;height:30px"
+                    oninput="drawCanvas()">
+                <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:20px;height:20px" />
+                Animate &nbsp;&nbsp;
+                <a href="?pid=0">Colors 1</a> &nbsp;
+                <a href="?pid=1">Colors 2</a> &nbsp;
+                <a href="?pid=2">Colors 3</a> &nbsp;
+                <a href="?pid=3">Colors 4</a> &nbsp;
+            </div>
+        </div>
+        <div id="main">
+            <div id="content">
+                <canvas id="myCanvas" syle="width:100%;height:100%;"></canvas>
+            </div>
+        </div>
+    </div>
+</body>
+
 <script src="pistr.js"></script>
-<canvas id="myCanvas" width="430" height="400"></canvas>
-<div class="slidecontainer">
-    <input type="range" min="4" max="100" value="20" id="size_slider" style="width:90%;height:50px"
-        oninput="drawCanvas()">
-    <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:50px;height:50px">
-</div>
+
 <script>
     function animateMy() {
         var should_animate = document.getElementById("myCheck").checked;
@@ -66,58 +140,70 @@
     }
 
     function drawCanvas() {
-        var size_raw = parseInt(document.getElementById("size_slider").value)
+        var size = parseInt(document.getElementById("size_slider").value)
         // console.log(size)
         var c = document.getElementById("myCanvas");
-        let width = c.width;
-        let height = c.height;
-        var size = size_raw
+        c.style.width ='100%';
+  c.style.height='100%';
+  // ...then set the internal size to match
+  c.width  = c.offsetWidth;
+  c.height = c.offsetHeight;
+        var width = document.getElementById("content").offsetWidth;
+        var height = document.getElementById("content").offsetHeight;
+        console.log(width, height, document.getElementById("main"));
+        if (!(size in canvasCache)) {
+            var _c = document.createElement('canvas')
+            _c.width = width
+            _c.height = height
+            var ctx = _c.getContext("2d");
+            ctx.fillStyle = "#FFFFFF"
+            ctx.fillRect(0, 0, width, height)
+            var x = 0;
+            var y = 0;
+            // draw digits first
+            for (i = 0; i < 10; ++i) {
+                _canvas = canvases[i]
+                _ctx = _canvas.getContext("2d");
+                _ctx.width = size
+                _ctx.height = size
+                _ctx.fillStyle = colorArray[i];
+                _ctx.fillRect(0, 0, size, size);
+                _ctx.fillStyle = textColorArray[i];
+                if (size > 6) {
+                    _ctx.font = (size - 2) + "px Verdana";
+                    _ctx.textAlign = "center";
+                    _ctx.textBaseline = "middle";
+                    _ctx.fillText(i, size / 2, size / 2);
+                }
+            }
+            for (i = 0; i < pi.length; ++i) {
+                let digit = parseInt(pi[i])
+                ctx.drawImage(canvases[digit], x, y);
+                x += size
+                if (x > width) {
+                    x = 0;
+                    y += size;
+                }
+                if (y > height) {
+                    break
+                }
+            }
+            canvasCache[size] = _c
+        }
         var ctx = c.getContext("2d");
-        ctx.fillStyle = "#FFFFFF"
-        ctx.fillRect(0, 0, width, height)
-        var x = 0;
-        var y = 0;
-        // draw digits first
-        for (i = 0; i < 10; ++i) {
-            _canvas = canvases[i]
-            _ctx = _canvas.getContext("2d");
-            _ctx.width = size
-            _ctx.height = size
-            _ctx.fillStyle = colorArray[i];
-            _ctx.fillRect(0, 0, size, size);
-            _ctx.fillStyle = textColorArray[i];
-            if (size > 6) {
-                _ctx.font = (size - 2) + "px Verdana";
-                _ctx.textAlign = "center";
-                _ctx.textBaseline = "middle";
-                _ctx.fillText(i, size / 2, size / 2);
-            }
-        }
-        for (i = 0; i < pi.length; ++i) {
-            let digit = parseInt(pi[i])
-            ctx.drawImage(canvases[digit],x,y);
-            x += size
-            if (x > width) {
-                x = 0;
-                y += size;
-            }
-            if (y > height) {
-                break
-            }
-        }
-    }
-    var g_animationDirection = -1;
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const canvases = []
-    for (i = 0; i < 10; ++i) {
-        c = document.createElement('canvas')
-        canvases.push(c)
+        ctx.drawImage(canvasCache[size], 0, 0);
 
     }
+    var g_animationDirection = -1;
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+    var canvasCache = {}
+    var canvases = []
     var colorPalete = [
         ['#0000FF', '#7fff00', '#D2691E', '#DC143C', '#00008B', '#FF1493', '#00FF00', '#FF0000', '#FFFF00', '#6A5ACD', '#C0C0C0'],
         ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D', '#C0C0C0'],
+        ["#1705e8","#2e09d1","#460eb9","#5d13a2","#74178b","#8b1c74","#a2205d","#b92546","#d12a2e","#e82e17"],
+        ["#171717","#2e2e2e","#464646","#5d5d5d","#747474","#8b8b8b","#a2a2a2","#b9b9b9","#d1d1d1","#e8e8e8"]
     ];
     var palete_id = parseInt(urlParams.get('pid'));
     if (isNaN(palete_id)) palete_id = 0;
@@ -126,12 +212,19 @@
     for (i = 0; i < colorArray.length; ++i) {
         textColorArray.push(invertColor(colorArray[i], false))
     }
+    for (i = 0; i < 10; ++i) {
+        c = document.createElement('canvas')
+        canvases.push(c)
+
+    }
     console.log(textColorArray);
     console.log(colorArray);
     var dimension = [document.documentElement.clientWidth, document.documentElement.clientHeight];
     var c = document.getElementById("myCanvas");
-    c.width = dimension[0] * 0.97;
-    c.height = dimension[1] * 0.95;
+    // c.width = dimension[0] * 0.97;
+    // c.height = dimension[1] * 0.95;
     document.getElementById("size_slider").width = dimension[0] * 0.9;
     drawCanvas()
 </script>
+
+</html>
