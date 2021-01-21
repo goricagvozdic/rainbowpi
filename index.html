@@ -1,4 +1,4 @@
-<script src="pistr.js"></script> 
+<script src="pistr.js"></script>
 <canvas id="myCanvas" width="430" height="400"></canvas>
 <div class="slidecontainer">
     <input type="range" min="4" max="100" value="20" id="size_slider" style="width:90%;height:50px"
@@ -11,26 +11,61 @@
         console.log(should_animate);
         if (should_animate) {
             var size_raw = parseInt(document.getElementById("size_slider").value)
-            if (g_animationDirection<0) {
-                if (size_raw>4) size_raw-=1;
+            if (g_animationDirection < 0) {
+                if (size_raw > 4) size_raw -= 1;
                 else {
-                    g_animationDirection=1;
-                    size_raw+=1;
+                    g_animationDirection = 1;
+                    size_raw += 1;
                 }
             } else {
-                if (size_raw<100) size_raw+=1;
+                if (size_raw < 100) size_raw += 1;
                 else {
-                    g_animationDirection=-1;
-                    size_raw-=1;
+                    g_animationDirection = -1;
+                    size_raw -= 1;
                 }
             }
-            document.getElementById("size_slider").value=size_raw;
+            document.getElementById("size_slider").value = size_raw;
             drawCanvas();
             setTimeout(animateMy, 100)
         }
     }
-    function drawCanvas() {
 
+    // taken from
+    //   https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color
+    function padZero(str, len) {
+        len = len || 2;
+        var zeros = new Array(len).join('0');
+        return (zeros + str).slice(-len);
+    }
+    function invertColor(hex, bw) {
+        if (hex.indexOf('#') === 0) {
+            hex = hex.slice(1);
+        }
+        // convert 3-digit hex to 6-digits.
+        if (hex.length === 3) {
+            hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        }
+        if (hex.length !== 6) {
+            throw new Error('Invalid HEX color.');
+        }
+        var r = parseInt(hex.slice(0, 2), 16),
+            g = parseInt(hex.slice(2, 4), 16),
+            b = parseInt(hex.slice(4, 6), 16);
+        if (bw) {
+            // http://stackoverflow.com/a/3943023/112731
+            return (r * 0.299 + g * 0.587 + b * 0.114) > 186
+                ? '#000000'
+                : '#FFFFFF';
+        }
+        // invert color components
+        r = (255 - r).toString(16);
+        g = (255 - g).toString(16);
+        b = (255 - b).toString(16);
+        // pad each with zeros and return
+        return "#" + padZero(r) + padZero(g) + padZero(b);
+    }
+
+    function drawCanvas() {
         var size_raw = parseInt(document.getElementById("size_slider").value)
         // console.log(size)
         var c = document.getElementById("myCanvas");
@@ -46,7 +81,7 @@
             let digit = parseInt(pi[i])
             ctx.fillStyle = colorArray[digit];
             ctx.fillRect(x, y, size, size);
-            ctx.fillStyle = colorArray[digit + 1];
+            ctx.fillStyle = textColorArray[digit];
             ctx.font = (size - 2) + "px Verdana";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -64,17 +99,23 @@
         }
     }
     var g_animationDirection = -1;
-    
-    var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
-        '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
-        '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
-        '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
-        '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
-        '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
-        '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
-        '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
-        '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
-        '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    var colorPalete = [
+        ['#e9002c', '#ef4057', '#f48082', '#fabfae', '#ffffd9', '#bff1d4', '#80e2d0', '#40d4cb', '#00c5c6', '#B34D4D' ],
+        ['#ff0000', '#fc4005', '#f8800b', '#f5bf10', '#f2ff15', '#b5ff2a', '#79ff3e', '#3cff53', '#00ff67', '#B34D4D'],
+        ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D']
+    ];
+    var palete_id = parseInt(urlParams.get('pid'));
+    if (isNaN(palete_id)) palete_id=0;
+    var colorArray = colorPalete[palete_id];
+    var textColorArray = [];
+    for (i = 0; i < colorArray.length; ++i) {
+        textColorArray.push(invertColor(colorArray[i], false))
+    }
+    console.log(textColorArray);
+    console.log(colorArray);
     var dimension = [document.documentElement.clientWidth, document.documentElement.clientHeight];
     var c = document.getElementById("myCanvas");
     c.width = dimension[0] * 0.97;
