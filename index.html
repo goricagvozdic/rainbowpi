@@ -251,6 +251,7 @@ input[type="color"] {
 ::-moz-focus-inner{
   padding: 0;
 }
+
 </style>
 
 <body>
@@ -284,7 +285,9 @@ input[type="color"] {
                                 oninput="drawCanvas()"> <br/><br />
                                 <label>
                             <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:40px;height:40px" />
-                            <span style='font-size: 18pt;position:relative;top: -15px;'>Animate &nbsp;&nbsp; </br/></span>
+                            <span style='font-size: 18pt;position:relative;top: -15px;'>Animate &nbsp;&nbsp; </span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="" id="download" style="font-size: 18pt;position:relative;top: -15px;" download="rainbowpi.png" onclick="downloadCanvas(this);">Download image</a>
                         </label>
                             </td>
                         <td>&nbsp;</td>
@@ -292,8 +295,7 @@ input[type="color"] {
                             <div style="width:200px;text-align: center;">
                                 <a href="?pid=0">Colors 1</a> <br />
                                 <a href="?pid=1">Colors 2</a> <br />
-                                <a href="?pid=2">Colors 3</a> <br />
-                                <a href="?pid=3">Colors 4</a> <br />            
+                                <a href="?pid=3">Colors 3</a> <br />            
                                 <a href="?pid=4">All White</a> <br />            
                             </div>
                         </td>
@@ -313,6 +315,9 @@ input[type="color"] {
 <script src="pistr.js"></script>
 
 <script>
+    function downloadCanvas(el) {
+        el.href = document.getElementById('myCanvas').toDataURL('image/png');
+    }
     function animateMy() {
         var should_animate = document.getElementById("myCheck").checked;
         console.log(should_animate);
