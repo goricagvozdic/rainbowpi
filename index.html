@@ -438,7 +438,7 @@ input[type="color"] {
             }
             for (i = 0; i < pi.length; ++i) {
                 let digit = parseInt(pi[i])
-                ctx.drawImage(canvases[digit], x, y);
+                ctx.drawImage(canvases[digit], 0, 0, size, size, x, y, size, size);
                 x += size
                 if (x > width) {
                     x = 0;
