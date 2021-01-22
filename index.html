@@ -2,6 +2,7 @@
 <style>
     a {
         color: black;
+        font-size: 18pt;
     }
 
     .bg {
@@ -77,12 +78,12 @@
     #header {
         top: 0;
         right: 0;
-        height: 100px;
+        height: 200px;
         left: 0;
     }
 
     #main {
-        top: 100px;
+        top: 200px;
         right: 0;
         bottom: 0;
         left: 0;
@@ -103,6 +104,104 @@
         overflow: auto;
     }
 
+    input[type="range"] {
+  width: 300px;
+  background: transparent;
+}
+/*###################################*/
+/*###########Responsive Range########*/
+/*###################################*/
+/*##############Core Style###########*/
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+/*#############Thumb##############*/
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 36px;
+  width: 36px;
+  background: #555;
+  cursor: pointer;
+  margin-top: -12px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 36px;
+  width: 36px;
+  background: #555;
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-thumb {
+  height: 36px;
+  width: 36px;
+  background: #555;
+  cursor: pointer;
+}
+/*#############Track##############*/
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: #ccc;
+}
+
+input[type="range"]:active::-webkit-slider-runnable-track {
+  background: #d6d6d6;
+}
+
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: #ccc;
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type="range"]::-ms-fill-lower {
+  background: #ccc;
+}
+
+input[type="range"]:focus::-ms-fill-lower {
+  background: #ddd;
+}
+
+input[type="range"]::-ms-fill-upper {
+  background: #ccc;
+}
+
+input[type="range"]:focus::-ms-fill-upper {
+  background: #ddd;
+}
+
     .cpicker {
         width: 50px;
         height: 30px;
@@ -120,29 +219,43 @@
             <div class="bg bg2"></div>
             <div class="bg bg3"></div>
             <div
-                style="width:100px;height:100px;background-image: url('pi.png');background-size: contain;z-index: -1;position:absolute;background-repeat: no-repeat;">
+                style="width:150px;height:150px;background-image: url('pi.png');background-size: contain;z-index: -1;position:absolute;background-repeat: no-repeat;">
             </div>
             <div class="slidecontainer"
-                style='font-face:Verdana;font-size:20px;color:black;position:absolute;top:0px;left:100px;'>
-                <input type="range" min="4" max="100" value="20" id="size_slider" style="width:100%;height:30px"
-                    oninput="drawCanvas()">
-                <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:20px;height:20px" />
-                Animate &nbsp;&nbsp;
-                <a href="?pid=0">Colors 1</a> &nbsp;
-                <a href="?pid=1">Colors 2</a> &nbsp;
-                <a href="?pid=2">Colors 3</a> &nbsp;
-                <a href="?pid=3">Colors 4</a> &nbsp;
-                <br />
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_0">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_1">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_2">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_3">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_4">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_5">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_6">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_7">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_8">
-                <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_9">
+                style='font-family:Verdana;font-size:32pt;color:black;position:absolute;top:0px;left:150px;width:max-content;'>
+                <table style="width: 100%;">
+                    <tr>
+                        <td>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_0">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_1">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_2">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_3">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_4">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_5">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_6">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_7">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_8">
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_9">
+                            <br />
+                            <br />
+                            <input type="range" min="4" max="100" value="20" id="size_slider" style="width:100%;height:30px"
+                                oninput="drawCanvas()"> <br/><br />
+                            <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:20px;height:20px" />
+                            <span style='font-size: 18pt;'>Animate &nbsp;&nbsp; </br/></span>
+                            </td>
+                        <td>&nbsp;</td>
+                        <td>
+                            <div style="width:200px;text-align: center;">
+                                <a href="?pid=0">Colors 1</a> <br />
+                                <a href="?pid=1">Colors 2</a> <br />
+                                <a href="?pid=2">Colors 3</a> <br />
+                                <a href="?pid=3">Colors 4</a> <br />            
+                                <a href="?pid=4">All White</a> <br />            
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
             </div>
         </div>
         <div id="main">
@@ -302,7 +415,8 @@
         ['#0000FF', '#7fff00', '#D2691E', '#DC143C', '#00008B', '#FF1493', '#00FF00', '#FF0000', '#FFFF00', '#6A5ACD', '#C0C0C0'],
         ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D', '#C0C0C0'],
         ["#1705e8", "#2e09d1", "#460eb9", "#5d13a2", "#74178b", "#8b1c74", "#a2205d", "#b92546", "#d12a2e", "#e82e17"],
-        ["#171717", "#2e2e2e", "#464646", "#5d5d5d", "#747474", "#8b8b8b", "#a2a2a2", "#b9b9b9", "#d1d1d1", "#e8e8e8"]
+        ["#171717", "#2e2e2e", "#464646", "#5d5d5d", "#747474", "#8b8b8b", "#a2a2a2", "#b9b9b9", "#d1d1d1", "#e8e8e8"],
+        ["#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"]
     ];
     var palete_id = parseInt(urlParams.get('pid'));
     if (isNaN(palete_id)) palete_id = 0;
