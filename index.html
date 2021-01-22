@@ -409,8 +409,7 @@ input[type="color"] {
         c.width = c.offsetWidth;
         c.height = c.offsetHeight;
         var width = document.getElementById("content").offsetWidth;
-        var height = document.getElementById("content").offsetHeight;
-        console.log(width, height, document.getElementById("main"));
+        var height = document.getElementById("content").offsetHeight-150;
         if (!(size in canvasCache)) {
             var _c = document.createElement('canvas')
             _c.width = width
@@ -448,6 +447,16 @@ input[type="color"] {
                     break
                 }
             }
+            ctx.fillStyle = "#880088"
+            ctx.font = "bold italic 26pt Verdana";
+            ctx.textAlign = "right";
+            ctx.textBaseline = "bottom";
+            ctx.globalCompositeOperation = "multiply";
+            ctx.fillText(imageStamp, width-20, height-70);
+            ctx.globalCompositeOperation = "normal";
+            ctx.strokeText(imageStamp, width-20, height-70);
+            console.log(width,height)
+
             canvasCache[size] = _c
         }
         var ctx = c.getContext("2d");
@@ -456,7 +465,8 @@ input[type="color"] {
     }
     var g_animationDirection = -1;
     let queryString = window.location.search;
-    let urlParams = new URLSearchParams(queryString);
+    let imageStamp = window.location.hostname;
+    let urlParams = new URLSearchParams(queryString);    
     var canvasCache = {}
     var canvases = []
     var colorPickers = []
