@@ -201,15 +201,56 @@ input[type="range"]::-ms-fill-upper {
 input[type="range"]:focus::-ms-fill-upper {
   background: #ddd;
 }
+/*** color pickers ***/
+.cpicker_digit {
+    position: relative;
+    display: inline-block;
+    width: 0px;
+    font-size: 40px;
+    margin: 0px;
+    padding: 0px;
+    left: -45px;
+    top:-10px;
+    color: white;
+    stroke: black;
+    stroke-width: 1px;
+    mix-blend-mode: difference;
+    pointer-events: none;
+}
+input[type="color"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  height: 50px;
+  padding: 0;
+  width: 50px;
+}
 
-    .cpicker {
-        width: 50px;
-        height: 30px;
-        border: none;
-        padding: 0%;
-        margin: 0%;
+*:focus{
+  border-radius: 0;
+  outline: none;
+}
 
-    }
+::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+::-webkit-color-swatch{
+  border: 0;
+  border-radius: 0;
+}
+
+::-moz-color-swatch,
+::-moz-focus-inner{
+  border: 0;
+}
+
+::-moz-focus-inner{
+  padding: 0;
+}
 </style>
 
 <body>
@@ -219,29 +260,32 @@ input[type="range"]:focus::-ms-fill-upper {
             <div class="bg bg2"></div>
             <div class="bg bg3"></div>
             <div
-                style="width:150px;height:150px;background-image: url('pi.png');background-size: contain;z-index: -1;position:absolute;background-repeat: no-repeat;">
+                style="top:25px;width:150px;height:150px;background-image: url('pi.png');background-size: contain;z-index: -1;position:absolute;background-repeat: no-repeat;">
             </div>
             <div class="slidecontainer"
                 style='font-family:Verdana;font-size:32pt;color:black;position:absolute;top:0px;left:150px;width:max-content;'>
                 <table style="width: 100%;">
                     <tr>
                         <td>
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_0">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_1">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_2">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_3">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_4">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_5">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_6">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_7">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_8">
-                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_9">
+                            <br />
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_0"> <div class="cpicker_digit">0</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_1"> <div class="cpicker_digit">1</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_2"> <div class="cpicker_digit">2</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_3"> <div class="cpicker_digit">3</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_4"> <div class="cpicker_digit">4</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_5"> <div class="cpicker_digit">5</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_6"> <div class="cpicker_digit">6</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_7"> <div class="cpicker_digit">7</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_8"> <div class="cpicker_digit">8</div> </input>
+                            <input type="color" class="cpicker" name="favcolor" value="#ff0000" title="1" id="color_9"> <div class="cpicker_digit">9</div> </input>
                             <br />
                             <br />
-                            <input type="range" min="4" max="100" value="20" id="size_slider" style="width:100%;height:30px"
+                            <input type="range" min="4" max="100" value="100" id="size_slider" style="width:100%;height:30px"
                                 oninput="drawCanvas()"> <br/><br />
-                            <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:20px;height:20px" />
-                            <span style='font-size: 18pt;'>Animate &nbsp;&nbsp; </br/></span>
+                                <label>
+                            <input type="checkbox" id="myCheck" onclick="animateMy()" style="width:40px;height:40px" />
+                            <span style='font-size: 18pt;position:relative;top: -15px;'>Animate &nbsp;&nbsp; </br/></span>
+                        </label>
                             </td>
                         <td>&nbsp;</td>
                         <td>
